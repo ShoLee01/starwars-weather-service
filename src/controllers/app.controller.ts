@@ -7,6 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiResponse, ApiOperation } from '@nestjs/swagger';
+import { Throttle, seconds } from '@nestjs/throttler';
 
 import { CreateCustomDto } from 'src/core/dtos/create-custom.dto';
 import { Fusion } from 'src/core/entities/fusion.entity';
@@ -26,6 +27,12 @@ export class AppController {
 
   /** GET /fusionados */
   @Get('fusionados')
+  @Throttle({
+    default: {
+      limit: 2,
+      ttl: seconds(20),   // ventana de 20 segundos (convertido a ms)
+    },
+  })
   @ApiOperation({ summary: 'Crear fusiones' })
   @ApiResponse({ status: 200, type: Fusion, description: 'Datos fusionados de SWAPI + WeatherAPI' })
   async getFusion(): Promise<Fusion> {

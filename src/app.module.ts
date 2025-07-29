@@ -11,12 +11,23 @@ import { CustomDataModule } from './user-cases/custom-data/custom-data-use-cases
 import { AppController } from './controllers/app.controller';
 import configuration from './config/configuration';
 import { FusionModule } from './user-cases/fusion/fusion-use-cases.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { CustomThrottlerGuard } from './security/throttler.guard';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ 
       isGlobal: true,
       load: [configuration],
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 60,   // ventana de 60 segundos
+          limit: 10,  // hasta 10 peticiones
+        },
+      ],
     }),
     AuthModule, 
     PlanetModule, 
@@ -29,6 +40,11 @@ import { FusionModule } from './user-cases/fusion/fusion-use-cases.module';
     FusionModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: CustomThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
