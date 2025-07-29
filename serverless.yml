@@ -8,16 +8,6 @@ plugins:
 custom:
   serverless-offline:
     httpPort: 3000
-  build:
-    esbuild:
-      bundle: true
-      minify: true
-      sourcemap: true
-      target: node20
-      platform: node
-      exclude:
-        - aws-sdk
-        - swagger-ui-dist
   tables:
     planet: PlanetCache
     fusion: FusionCache
@@ -32,7 +22,7 @@ provider:
   memorySize: 128
   timeout: 10
   environment:
-    SWAPI_BASE_URL: http://swapi.dev/api
+    SWAPI_BASE_URL: http://swapi.dev/api/
     WEATHER_API_URL: https://api.weatherapi.com/v1/
     WEATHER_API_KEY: 15574fa7b8664faf8c8172813252807
     JWT_SECRET: a34a221886802b0c6b96098bdd807a65337254d1a8f7342ae00686e1981eb0c5
