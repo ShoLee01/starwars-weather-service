@@ -26,8 +26,8 @@ provider:
   memorySize: 128
   timeout: 10
   environment:
-    SWAPI_BASE_URL: http://swapi.dev/api/
-    WEATHER_API_URL: https://api.weatherapi.com/v1/
+    SWAPI_BASE_URL: http://swapi.dev/api
+    WEATHER_API_URL: https://api.weatherapi.com/v1
     WEATHER_API_KEY: 15574fa7b8664faf8c8172813252807
     JWT_SECRET: a34a221886802b0c6b96098bdd807a65337254d1a8f7342ae00686e1981eb0c5
     JWT_EXPIRES_IN: 1d
