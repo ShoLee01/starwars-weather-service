@@ -55,10 +55,5 @@ export class PlanetResultDto {
   @Expose()
   @Type(() => Date)
   @IsDate()
-  created: Date;
-
-  @Expose()
-  @Type(() => Date)
-  @IsDate()
   edited: Date;
 }
