@@ -8,6 +8,8 @@ plugins:
 custom:
   serverless-offline:
     httpPort: 3000
+  build:
+    esbuild: false
   tables:
     planet: PlanetCache
     fusion: FusionCache
