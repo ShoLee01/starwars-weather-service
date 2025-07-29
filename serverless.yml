@@ -8,8 +8,6 @@ plugins:
 custom:
   serverless-offline:
     httpPort: 3000
-  build:
-    esbuild: false
   tables:
     planet: PlanetCache
     fusion: FusionCache
@@ -47,10 +45,6 @@ provider:
             - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.fusion}
             - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.custom}
             - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.user}
-
-package:
-  include:
-    - dist/**
 
 functions:
   api:
