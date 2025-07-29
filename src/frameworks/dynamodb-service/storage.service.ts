@@ -151,7 +151,7 @@ export class StorageService {
     const start = (page - 1) * limit;
     const slice = sorted.slice(start, start + limit);
 
-    const items = slice.map((i) => i.data as Fusion);
+    const items = slice.map((i) => i as Fusion);
 
     return { items, total, page, limit };
   }
