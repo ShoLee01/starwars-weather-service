@@ -16,8 +16,15 @@ custom:
       exclude:
         - aws-sdk
         - swagger-ui-dist
+      external:
+        - '@nestjs/websockets/socket-module'
+        - '@nestjs/microservices/microservices-module'
+        - '@nestjs/microservices'
+        - 'class-transformer/storage'
+
   serverless-offline:
     httpPort: 3000
+  
   tables:
     planet: PlanetCache
     fusion: FusionCache
