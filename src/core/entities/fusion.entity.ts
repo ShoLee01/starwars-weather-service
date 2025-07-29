@@ -6,12 +6,6 @@ import { NormalizedCurrentDto, PlanetResultDto } from '../dtos';
  */
 export class Fusion {
   @ApiProperty({
-    description: 'ID del planeta en SWAPI',
-    example: 1,
-  })
-  planetId: number;
-
-  @ApiProperty({
     description: 'Datos del planeta obtenidos de SWAPI',
     type: () => PlanetResultDto,
   })

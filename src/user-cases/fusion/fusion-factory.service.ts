@@ -21,7 +21,6 @@ export class FusionFactoryService {
   async createFusion(): Promise<Fusion> {
     const newFusion = new Fusion();
     const planetId = getRandomInt1To60();
-    newFusion.planetId = planetId;
     let planet = await this.storageService.getPlanetCached(planetId.toString());
 
     if (!planet) {
