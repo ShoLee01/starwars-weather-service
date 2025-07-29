@@ -1,67 +1,64 @@
 import { 
   IsString, 
   IsNotEmpty, 
-  IsArray, 
   IsDate, 
-  IsUrl 
 } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 
+@Exclude()
 export class PlanetResultDto {
+  @Expose()
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   rotation_period: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   orbital_period: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   diameter: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   climate: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   gravity: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   terrain: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   surface_water: string;
 
+  @Expose()
   @IsString()
   @IsNotEmpty()
   population: string;
 
-  // @IsArray()
-  // @IsString({ each: true })
-  // @IsNotEmpty({ each: true })
-  // residents: string[];
-
-  // @IsArray()
-  // @IsString({ each: true })
-  // @IsNotEmpty({ each: true })
-  // films: string[];
-
+  @Expose()
   @Type(() => Date)
   @IsDate()
   created: Date;
 
+  @Expose()
   @Type(() => Date)
   @IsDate()
   edited: Date;
-
-  // @IsUrl()
-  // url: string;
 }

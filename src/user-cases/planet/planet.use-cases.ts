@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpClientService } from 'src/shared/http-client/http-client.service';
 import { PlanetResultDto } from 'src/core/dtos/index';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class PlanetUseCases {
@@ -18,6 +19,7 @@ export class PlanetUseCases {
 
   async findPlanet(id: number): Promise<PlanetResultDto> {
     const url = `${this.swapiBase}/planets/${id}`;
-    return this.http.get<PlanetResultDto>(url);
+    const raw = await this.http.get<PlanetResultDto>(url);
+    return plainToInstance(PlanetResultDto, raw, { excludeExtraneousValues: true });
   }
 }
