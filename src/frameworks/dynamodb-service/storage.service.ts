@@ -29,7 +29,11 @@ export class StorageService {
     const client = new DynamoDBClient({
       region: this.config.get<string>('aws.region')!,
     });
-    this.docClient = DynamoDBDocumentClient.from(client);
+    this.docClient = DynamoDBDocumentClient.from(client, {
+      marshallOptions: {
+        convertClassInstanceToMap: true,
+      },
+    });
   }
 
   async createUser(user: RegisterDto): Promise<void> {
