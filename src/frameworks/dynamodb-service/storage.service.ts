@@ -92,7 +92,7 @@ export class StorageService {
       TableName: TABLE_PLANET,
       Item: {
         planetId,
-        ...data,
+        data,
         ttl,
       },
     }));
@@ -119,8 +119,8 @@ export class StorageService {
         TableName: TABLE_FUSION,
         Item: {
           key: uuid(),
-          ...fusion.weather,
-          ...fusion.planet,
+          weather: fusion.weather,
+          planet: fusion.planet,
           createdAt: timestamp,
         },
       }),
