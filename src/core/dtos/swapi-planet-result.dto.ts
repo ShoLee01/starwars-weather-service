@@ -51,9 +51,4 @@ export class PlanetResultDto {
   @IsString()
   @IsNotEmpty()
   population: string;
-
-  @Expose()
-  @Type(() => Date)
-  @IsDate()
-  edited: Date;
 }
