@@ -1,0 +1,122 @@
+service: ms-starwars-weather  
+frameworkVersion: '4.17.2'
+
+plugins:
+  - serverless-offline
+
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+  build:
+    esbuild:
+      bundle: true
+      minify: true
+      sourcemap: true
+      target: node20
+      platform: node
+      exclude:
+        - aws-sdk
+        - swagger-ui-dist
+  tables:
+    planet: PlanetCache
+    fusion: FusionCache
+    custom: CustomCache
+    user:  UserCache
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  stage: dev
+  memorySize: 128
+  timeout: 10
+  environment:
+    AWS_REGION: ${self:provider.region}
+    SWAPI_BASE_URL: http://swapi.dev/api
+    WEATHER_API_URL: https://api.weatherapi.com/v1/
+    WEATHER_API_KEY: 15574fa7b8664faf8c8172813252807
+    JWT_SECRET: a34a221886802b0c6b96098bdd807a65337254d1a8f7342ae00686e1981eb0c5
+    JWT_EXPIRES_IN: 1d
+    PLANET_CACHE_TABLE: ${self:custom.tables.planet}
+    FUSION_CACHE_TABLE: ${self:custom.tables.fusion}
+    CUSTOM_TABLE_NAME: ${self:custom.tables.custom}
+    USER_CACHE_TABLE: ${self:custom.tables.user}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:Scan
+          Resource:
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.planet}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.fusion}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.custom}
+            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.user}
+
+functions:
+  api:
+    handler: dist/handler.handler
+    events:
+      - httpApi:
+          path: /api/v1/{proxy+}
+          method: ANY
+      - httpApi:
+          path: /{proxy+}
+          method: ANY
+
+resources:
+  Resources:
+    PlanetCacheTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tables.planet}
+        AttributeDefinitions:
+          - AttributeName: planetId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: planetId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
+
+    FusionCacheTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tables.fusion}
+        AttributeDefinitions:
+          - AttributeName: key
+            AttributeType: S
+        KeySchema:
+          - AttributeName: key
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    CustomCacheTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tables.custom}
+        AttributeDefinitions:
+          - AttributeName: key
+            AttributeType: S
+        KeySchema:
+          - AttributeName: key
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    UserCacheTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tables.user}
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST

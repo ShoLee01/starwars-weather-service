@@ -1,0 +1,254 @@
+{
+  "C:\\Users\\Sho Lee\\Documents\\Retos\\Softec\\starwars-weather-service\\serverless.yml": {
+    "versionFramework": "4.17.2",
+    "servicePath": "C:\\Users\\Sho Lee\\Documents\\Retos\\Softec\\starwars-weather-service\\serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "service": "ms-starwars-weather",
+      "frameworkVersion": "4.17.2",
+      "plugins": [
+        "serverless-offline"
+      ],
+      "build": {
+        "esbuild": {
+          "bundle": true,
+          "minify": true,
+          "sourcemap": true,
+          "target": "node20",
+          "platform": "node",
+          "exclude": [
+            "aws-sdk",
+            "swagger-ui-dist"
+          ],
+          "concurrency": 10
+        }
+      },
+      "custom": {
+        "serverless-offline": {
+          "httpPort": 3000
+        },
+        "tables": {
+          "planet": "PlanetCache",
+          "fusion": "FusionCache",
+          "custom": "CustomCache",
+          "user": "UserCache"
+        }
+      },
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs20.x",
+        "region": "us-east-1",
+        "stage": "dev",
+        "memorySize": 128,
+        "timeout": 10,
+        "environment": {
+          "AWS_REGION": "us-east-1",
+          "SWAPI_BASE_URL": "http://swapi.dev/api",
+          "WEATHER_API_URL": "https://api.weatherapi.com/v1/",
+          "WEATHER_API_KEY": "<REDACTED>",
+          "JWT_SECRET": "<REDACTED>",
+          "JWT_EXPIRES_IN": "1d",
+          "PLANET_CACHE_TABLE": "PlanetCache",
+          "FUSION_CACHE_TABLE": "FusionCache",
+          "CUSTOM_TABLE_NAME": "CustomCache",
+          "USER_CACHE_TABLE": "UserCache"
+        },
+        "iam": {
+          "role": {
+            "statements": [
+              {
+                "Effect": "Allow",
+                "Action": [
+                  "dynamodb:PutItem",
+                  "dynamodb:GetItem",
+                  "dynamodb:Scan"
+                ],
+                "Resource": [
+                  "arn:aws:dynamodb:us-east-1:*:table/PlanetCache",
+                  "arn:aws:dynamodb:us-east-1:*:table/FusionCache",
+                  "arn:aws:dynamodb:us-east-1:*:table/CustomCache",
+                  "arn:aws:dynamodb:us-east-1:*:table/UserCache"
+                ]
+              }
+            ]
+          }
+        },
+        "versionFunctions": true
+      },
+      "functions": {
+        "api": {
+          "handler": "dist/handler.handler",
+          "events": [
+            {
+              "httpApi": {
+                "path": "/api/v1/{proxy+}",
+                "method": "ANY"
+              }
+            },
+            {
+              "httpApi": {
+                "path": "/{proxy+}",
+                "method": "ANY"
+              }
+            }
+          ],
+          "name": "ms-starwars-weather-dev-api"
+        }
+      },
+      "resources": {
+        "Resources": {
+          "PlanetCacheTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "PlanetCache",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "planetId",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "planetId",
+                  "KeyType": "HASH"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST",
+              "TimeToLiveSpecification": {
+                "AttributeName": "ttl",
+                "Enabled": true
+              }
+            }
+          },
+          "FusionCacheTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "FusionCache",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "key",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "key",
+                  "KeyType": "HASH"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST"
+            }
+          },
+          "CustomCacheTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "CustomCache",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "key",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "key",
+                  "KeyType": "HASH"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST"
+            }
+          },
+          "UserCacheTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+              "TableName": "UserCache",
+              "AttributeDefinitions": [
+                {
+                  "AttributeName": "email",
+                  "AttributeType": "S"
+                }
+              ],
+              "KeySchema": [
+                {
+                  "AttributeName": "email",
+                  "KeyType": "HASH"
+                }
+              ],
+              "BillingMode": "PAY_PER_REQUEST"
+            }
+          }
+        }
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs20.x",
+      "region": "us-east-1",
+      "stage": "dev",
+      "memorySize": 128,
+      "timeout": 10,
+      "environment": {
+        "AWS_REGION": "us-east-1",
+        "SWAPI_BASE_URL": "http://swapi.dev/api",
+        "WEATHER_API_URL": "https://api.weatherapi.com/v1/",
+        "WEATHER_API_KEY": "<REDACTED>",
+        "JWT_SECRET": "<REDACTED>",
+        "JWT_EXPIRES_IN": "1d",
+        "PLANET_CACHE_TABLE": "PlanetCache",
+        "FUSION_CACHE_TABLE": "FusionCache",
+        "CUSTOM_TABLE_NAME": "CustomCache",
+        "USER_CACHE_TABLE": "UserCache"
+      },
+      "iam": {
+        "role": {
+          "statements": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:GetItem",
+                "dynamodb:Scan"
+              ],
+              "Resource": [
+                "arn:aws:dynamodb:us-east-1:*:table/PlanetCache",
+                "arn:aws:dynamodb:us-east-1:*:table/FusionCache",
+                "arn:aws:dynamodb:us-east-1:*:table/CustomCache",
+                "arn:aws:dynamodb:us-east-1:*:table/UserCache"
+              ]
+            }
+          ]
+        }
+      },
+      "versionFunctions": true
+    },
+    "dashboard": {
+      "isEnabledForService": false,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": null,
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": null,
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "error": {
+      "message": "Build failed with 1 error:\nerror: Invalid option in build() call: \"concurrency\"",
+      "stack": "ServerlessError2: Build failed with 1 error:\nerror: Invalid option in build() call: \"concurrency\"\n    at Esbuild._build (file:///C:/Users/Sho%20Lee/.serverless/releases/4.17.2/package/dist/sf-core.js:1346:16014)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async before:offline:start (file:///C:/Users/Sho%20Lee/.serverless/releases/4.17.2/package/dist/sf-core.js:1346:4650)\n    at async PluginManager.runHooks (file:///C:/Users/Sho%20Lee/.serverless/releases/4.17.2/package/dist/sf-core.js:1355:9865)\n    at async PluginManager.invoke (file:///C:/Users/Sho%20Lee/.serverless/releases/4.17.2/package/dist/sf-core.js:1355:10575)\n    at async PluginManager.run (file:///C:/Users/Sho%20Lee/.serverless/releases/4.17.2/package/dist/sf-core.js:1355:11364)\n    at async Serverless.run (file:///C:/Users/Sho%20Lee/.serverless/releases/4.17.2/package/dist/sf-core.js:1362:10523)\n    at async runFramework (file:///C:/Users/Sho%20Lee/.serverless/releases/4.17.2/package/dist/sf-core.js:1389:1777)\n    at async TraditionalRunner.run (file:///C:/Users/Sho%20Lee/.serverless/releases/4.17.2/package/dist/sf-core.js:1385:28331)\n    at async route (file:///C:/Users/Sho%20Lee/.serverless/releases/4.17.2/package/dist/sf-core.js:1560:2878)",
+      "code": "ESBULD_BUILD_ERROR"
+    },
+    "serviceRawFile": "service: ms-starwars-weather  \nframeworkVersion: '4.17.2'\n\nplugins:\n  - serverless-offline\n\nbuild:\n  esbuild:\n    bundle: true\n    minify: true\n    sourcemap: true\n    target: node20\n    platform: node\n    exclude: ['aws-sdk', 'swagger-ui-dist']\n    concurrency: 10\n\ncustom:\n  serverless-offline:\n    httpPort: 3000\n  tables:\n    planet: PlanetCache\n    fusion: FusionCache\n    custom: CustomCache\n    user:  UserCache\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: us-east-1\n  stage: dev\n  memorySize: 128\n  timeout: 10\n  environment:\n    AWS_REGION: ${self:provider.region}\n    SWAPI_BASE_URL: http://swapi.dev/api\n    WEATHER_API_URL: https://api.weatherapi.com/v1/\n    WEATHER_API_KEY: 15574fa7b8664faf8c8172813252807\n    JWT_SECRET: a34a221886802b0c6b96098bdd807a65337254d1a8f7342ae00686e1981eb0c5\n    JWT_EXPIRES_IN: 1d\n    PLANET_CACHE_TABLE: ${self:custom.tables.planet}\n    FUSION_CACHE_TABLE: ${self:custom.tables.fusion}\n    CUSTOM_TABLE_NAME: ${self:custom.tables.custom}\n    USER_CACHE_TABLE: ${self:custom.tables.user}\n\n  iam:\n    role:\n      statements:\n        - Effect: Allow\n          Action:\n            - dynamodb:PutItem\n            - dynamodb:GetItem\n            - dynamodb:Scan\n          Resource:\n            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.planet}\n            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.fusion}\n            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.custom}\n            - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.user}\n\nfunctions:\n  api:\n    handler: dist/handler.handler\n    events:\n      - httpApi:\n          path: /api/v1/{proxy+}\n          method: ANY\n      - httpApi:\n          path: /{proxy+}\n          method: ANY\n\nresources:\n  Resources:\n    PlanetCacheTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: ${self:custom.tables.planet}\n        AttributeDefinitions:\n          - AttributeName: planetId\n            AttributeType: S\n        KeySchema:\n          - AttributeName: planetId\n            KeyType: HASH\n        BillingMode: PAY_PER_REQUEST\n        TimeToLiveSpecification:\n          AttributeName: ttl\n          Enabled: true\n\n    FusionCacheTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: ${self:custom.tables.fusion}\n        AttributeDefinitions:\n          - AttributeName: key\n            AttributeType: S\n        KeySchema:\n          - AttributeName: key\n            KeyType: HASH\n        BillingMode: PAY_PER_REQUEST\n\n    CustomCacheTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: ${self:custom.tables.custom}\n        AttributeDefinitions:\n          - AttributeName: key\n            AttributeType: S\n        KeySchema:\n          - AttributeName: key\n            KeyType: HASH\n        BillingMode: PAY_PER_REQUEST\n\n    UserCacheTable:\n      Type: AWS::DynamoDB::Table\n      Properties:\n        TableName: ${self:custom.tables.user}\n        AttributeDefinitions:\n          - AttributeName: email\n            AttributeType: S\n        KeySchema:\n          - AttributeName: email\n            KeyType: HASH\n        BillingMode: PAY_PER_REQUEST\n",
+    "command": [
+      "offline"
+    ],
+    "options": {},
+    "orgId": "f613efb7-d72b-4563-a1e8-6d62994ee217",
+    "orgName": "oxwar",
+    "userId": "sVlTPxG5ymSBkWlMVJ",
+    "userName": "oxwar",
+    "serviceProviderAwsAccountId": "799634405715",
+    "serviceProviderAwsCfStackId": null,
+    "serviceProviderAwsCfStackCreated": null,
+    "serviceProviderAwsCfStackUpdated": null,
+    "serviceProviderAwsCfStackStatus": null,
+    "serviceProviderAwsCfStackOutputs": null
+  }
+}
