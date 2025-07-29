@@ -6,6 +6,16 @@ plugins:
 
 
 custom:
+  build:
+    esbuild:
+      bundle: true
+      minify: true
+      sourcemap: true
+      target: node20
+      platform: node
+      exclude:
+        - aws-sdk
+        - swagger-ui-dist
   serverless-offline:
     httpPort: 3000
   tables:
@@ -48,7 +58,7 @@ provider:
 
 functions:
   api:
-    handler: dist/handler.handler
+    handler: src/handler.handler
     events:
       - httpApi:
           path: /api/v1/{proxy+}
