@@ -48,6 +48,10 @@ provider:
             - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.custom}
             - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tables.user}
 
+package:
+  include:
+    - dist/**
+
 functions:
   api:
     handler: dist/handler.handler
