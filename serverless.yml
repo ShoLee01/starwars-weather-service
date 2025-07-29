@@ -32,7 +32,6 @@ provider:
   memorySize: 128
   timeout: 10
   environment:
-    AWS_REGION: ${self:provider.region}
     SWAPI_BASE_URL: http://swapi.dev/api
     WEATHER_API_URL: https://api.weatherapi.com/v1/
     WEATHER_API_KEY: 15574fa7b8664faf8c8172813252807
