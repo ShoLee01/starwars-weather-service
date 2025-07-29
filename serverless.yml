@@ -7,20 +7,7 @@ plugins:
 
 custom:
   build:
-    esbuild:
-      bundle: true
-      minify: true
-      sourcemap: true
-      target: node20
-      platform: node
-      exclude:
-        - aws-sdk
-        - swagger-ui-dist
-      external:
-        - '@nestjs/websockets/socket-module'
-        - '@nestjs/microservices/microservices-module'
-        - '@nestjs/microservices'
-        - 'class-transformer/storage'
+    esbuild: false
 
   serverless-offline:
     httpPort: 3000
@@ -65,7 +52,7 @@ provider:
 
 functions:
   api:
-    handler: src/handler.handler
+    handler: dist/handler.handler
     events:
       - httpApi:
           path: /api/v1/{proxy+}
