@@ -32,6 +32,7 @@ export class StorageService {
     this.docClient = DynamoDBDocumentClient.from(client, {
       marshallOptions: {
         convertClassInstanceToMap: true,
+        removeUndefinedValues: true
       },
     });
   }
@@ -91,7 +92,7 @@ export class StorageService {
       TableName: TABLE_PLANET,
       Item: {
         planetId,
-        data,
+        ...data,
         ttl,
       },
     }));
@@ -118,8 +119,8 @@ export class StorageService {
         TableName: TABLE_FUSION,
         Item: {
           key: uuid(),
-          weather: fusion.weather,
-          planet: fusion.planet,
+          ...fusion.weather,
+          ...fusion.planet,
           createdAt: timestamp,
         },
       }),

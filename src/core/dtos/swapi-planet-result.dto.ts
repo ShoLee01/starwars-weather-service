@@ -44,15 +44,15 @@ export class PlanetResultDto {
   @IsNotEmpty()
   population: string;
 
-  @IsArray()
-  @IsString({ each: true })
-  @IsNotEmpty({ each: true })
-  residents: string[];
+  // @IsArray()
+  // @IsString({ each: true })
+  // @IsNotEmpty({ each: true })
+  // residents: string[];
 
-  @IsArray()
-  @IsString({ each: true })
-  @IsNotEmpty({ each: true })
-  films: string[];
+  // @IsArray()
+  // @IsString({ each: true })
+  // @IsNotEmpty({ each: true })
+  // films: string[];
 
   @Type(() => Date)
   @IsDate()
@@ -62,6 +62,6 @@ export class PlanetResultDto {
   @IsDate()
   edited: Date;
 
-  @IsUrl()
-  url: string;
+  // @IsUrl()
+  // url: string;
 }
