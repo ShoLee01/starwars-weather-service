@@ -171,7 +171,7 @@ Protegido con JWT y rate limiting (5 llamadas/20 s).
 
 **Ejemplo**:
 ```
-GET /api/v1/fusionados?planetId=1
+GET /api/v1/fusionados
 ```
 **Respuesta**:
 ```json
