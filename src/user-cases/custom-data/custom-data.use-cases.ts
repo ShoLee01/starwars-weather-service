@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CustomDataFactoryService } from './custom-data.service';
-import { Fusion } from 'src/core/entities/fusion.entity';
 import { CreateCustomDto } from 'src/core/dtos/create-custom.dto';
 
 @Injectable()

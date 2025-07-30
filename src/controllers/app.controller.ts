@@ -30,7 +30,7 @@ export class AppController {
   @Throttle({
     default: {
       limit: 2,
-      ttl: seconds(20),   // ventana de 20 segundos (convertido a ms)
+      ttl: seconds(20),
     },
   })
   @ApiOperation({ summary: 'Crear fusiones' })
